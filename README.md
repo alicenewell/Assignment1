@@ -1,2 +1,76 @@
 Repository #1
 Typing typing typing
+NOTES
+BIOS 512 08/26/25
+- R:
+    - What is programming?
+    - What can you do with a computer?
+        - Perform something useful in finite steps (practical algorithm - small amounts of time and space)
+    - Invisible environments
+        - Relationship between a name and a value
+        - (<<-) goes up until finds a binding
+        -   if it doesn't find it...bound
+        - single arrow (<-) creates a binding in the local/current environment 
+        - Function delays the evaluation of the code
+        - the function will return the last expression in their body
+            - the call turns into that
+    - Syntax:
+         - invoke variable (from example) without arguments in the function: x and y take on values that we gave
+         - when are expression: (x=10, y=11) ((w/in a function)) called
+         - "=" what we want to set, otherwise whichever is first in the order
+   - Laziness:
+       - Assumption: when we call a function, assume does it from within body
+       - however! in R, it doesn't evaluate until its called and used
+       - example won't print "Hello Everyone" because value of the expression was NEVER used bc it wasn't in the body of the function, only "TRUE" was
+       - second example will print "Hi"
+       - tidyverse: library of functions, concise, clear code (exploits R's non-standardness)
+       - ? and then function results...documentation of the function
+       - don't know what to do: apropos("search term")
+  -R is not whitespace sensitive
+    - however you can split function across multiple lines as long as ends with a binary operator
+- Nonstandard Evaluation
+    - Data frame
+    -  # in front of line of code == a comment
+    -  cleaner code if you put the comment HERE (Git Hub Repo)
+    -  Order of descending count
+    -  %>% == pipe operator
+    -  how can we say propert_name?
+          - the result of the first expression becomes the first argument of the next expression
+          - from the Linux shell
+          - not in global environment, but it w/in the dataframe
+          - b/c the dataframe is in the global environment, b/c of Tidyverse 
+          - tmp$x : will pull the name of x (in this example 'a')
+          - limbo until evaluated (R lets us capture this and extract the expression attached/bound to the variable)
+          - Tiddy Evaluation
+          - works because there are stacks of environments and dataframe is slid beneath these frames
+
+GIT:
+  - Git is a version control system
+  - invented to solve issue of not being able to collaborate in the olden days
+  - no centralized person in charge of a repository
+  - history of everything that has ever happened to the repository in version control system (don't have to make copies)
+  - Github: is not the same...website that hosts git repositories
+  - Git clone and protects/saves code even if computer destroyed
+        - in this way similar to OneDrive
+  - Can see people's contributions line-by-line
+  - Gitblame shows every line of file, the commit that changed it, and can see log to understand why you made that change (great for debugging if the code isn't yours or if you made the code a while ago) days v minutes of debugging
+  - Using git on the command line:
+       - could integrate in RStudio (but ... sloppy usage, constrains you)
+       - Will learn to engage and disengage
+       - Homebrew in Terminal (done did) for Mac
+       - Git Bash: pozics? shell
+  - Git Basics:
+       - create a git repo by going into the folder where we want the repository and type: git init
+       - hierarchy of directories top = root: /
+       - ls lists all your files
+       - home directory: place where all the files are (Mac): /user/username
+       - cd into home directory, mkdir project1
+       - cd project1
+       - every process has a working directory
+       - pwd (present working directory)
+       - git init turns a directory into a repository
+            - will initialize repo
+            - default branch == main
+            - read what comes out of the command line - should all be there
+            - git branch -m main (will change name from master to main)
+            - what makes it a Git repo? presence of: hidden directory .git (. in front get treated as 'invisible')
