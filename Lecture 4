@@ -1,0 +1,149 @@
+08/28/25
+
+1/5 genetic papers have Excel errors...girl that's crazy 
+Common Issues with Data Sets
+  - Duplicates: easy to detect (distinct and deplier) - always worth checking
+  - Pseudo-Duplicate Data: worse, some kind of encoding is different (like the salesmen data issue)
+      - hard to detect, happens often
+      - model could drastically overperform (really bad in regression)
+      - Example: testing data set performing better in runs than the actual data set; all images from the same
+background = classifier looks like it's doing better than reality 
+  - Missing Data: missing values throwing off what you're trying to capture, can be correlated with some other 
+variable and biasing the data
+      - no guarentee that "missing-ness" will be encoded consistently or in a way you think
+      - if don't look at data, might not notice 
+      - multiple ways of encoding missing-ness "NA" or "NULL" or "99"
+          - NA as a string v as a value
+  - Poorly encoded data dumps: example - CSV delimited w commas = wrong # of columns, data all shifted
+  - Inconsistently encoded dates or values: dates biggest risk here, timezone issues, daylight savings 
+reflected? 
+      - different format of times
+Why data cleaning is SOOOOOO important (before your analysis)
+As soon as ID error, you want to stop and fix it 
+
+Tidyverse - erogonimic version of R
+library(tidyverse)
+readr::read_csv #usaually don't use
+df <- read_csv("source_data/character-data.csv")
+
+df <- read_csv("source_data/character-data.csv", col_types = cols (
+character = col_character(),
+universe = col_character(),
+property_name = col_charcter(),
+values = col_character ()
+))
+assigns types by hand, via calls 
+
+csv is just a text file, problem doesn't inform you about what the values are (numerical/character)
+read_csv = tries to figure out which types each column is 
+
+Sorting/tables:
+sort(tables(df$property_name), decreasing=TRUE)
+  - which properties and how often we have them
+  - look at places where numbers are small
+
+Look at some subsets of the population
+Gender-wise data:
+
+library(dplyr);
+just_gender <- filter(df, property_name=="Gender")
+just_gender
+  - produces as Boolean array
+  - property_name is not a varaible but filter shennanigans allows this
+
+What does library dplyr do? no variable called dplyr. Library sees if this exists, slides it into the stack 
+of environments, just above the global probably(?) 
+  if have two filters, will see the most recent one 
+
+Tells it you want to filter the data but don't want to delete
+
+Type and size of propert_name=="Gender"? How many times expression elvaluated?
+  only ran once - Boolean array, used to then filter the data set 
+
+if say: df$property_name == "Gender"
+  will get all these FALSE(s) and TRUE(s)
+  = Boolean Indexing: 
+      - X <- C(5,4,3,5,1)
+      ii <- c(TRUE, FALSE, TRUE, TRUE, FALSE);
+      X[C(2,3)]
+  [] = integer indexing thingy
+  SPITS OUT: 4 3 (integer indexing)
+if had: x[ii] instead = 5 3 5 
+
+double brackets are ONLY FOR LISTS 
+  lists can contain any type of object 
+  box w a vector in it 
+  list with first element in it 
+  double braket it = unbox the list 
+
+Unique values of gender:
+table(just_gender$value); 
+  good appearing as a gender, uppercase Female and lowercase female
+
+arrange(tally(group_by(just_gender, value)), n)
+  alsmost always want to sort ascending 
+  make a note every time you see something intersting in the data 
+  don't know what ir means for gender to be 'good' = robots (remember superheroes)
+
+filter(just_gender, value=="Good");
+  apparently Lego Batman's gender 
+  good data scientist would then look at the DC wiki 
+  also duplicates
+
+Deal with lower/upper case female/male issue: convert everything to lowercase: 
+  library(stringr);
+  simplify_strings <- function (s) {
+  s <- str_to_lower(s);
+  s <- str_trim(s);
+  s <- str_replace_all(s1, "[^a-z]+","_")
+  s2
+}
+
+Piping operator: first leads into next 
+
+Represent these patterns in the way our brains think about things
+
+De-Duplication:
+` ` <- 10  #backticks = useful 
+
+  names(df) <- simplify_strings(names(df));
+  duplicated <- df %>% mutate(across(everythin(), simplify_strings)) %>%
+    distinct();
+  prints(sprintf(" )",
+    nrow(df),
+    nrow(deduplicated),
+    100-100*nrow(deduplicated)/nrow(df)));
+
+Printing out before and after row count, and % decrease
+  good as part of your report 
+
+f after = formatting 
+characters with % before == descriptions 
+escaping a % with a %
+
+Deduplicated = much less male/females, but still have 'good'
+
+Notes the bias of the male characters
+
+Throwing away ??? values 
+
+deciding genders that will exist in your cleaning/analysis
+
+Booleans Operators: 
+  & - ampersant: means a logical AND operation, parantheses for orders of operations
+  | : OR operator 
+  ! : ????????
+
+At the end of all this code after removing, you should...
+  Log a warning of what was removed 
+  Because source data could change!
+  Things correlate with missing-ness and errors 
+
+propoerties <- tidied_data %>% 
+group_by(property_name_ %>%
+tally() %>% 
+arrange(desce(n)); 
+
+can look at counts of 'good' and 'bad' characters 
+
+categorical data cna be exponential 
